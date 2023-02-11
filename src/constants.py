@@ -25,6 +25,9 @@ OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 OPENAI_MODEL_ENGINE = os.environ.get("OPENAI_MODEL_ENGINE", "text-davinci-003")
 OPENAI_MAX_TOKENS = int(os.environ.get("OPENAI_MAX_TOKENS", "512"))
 
+MODERATION_ENABLED = os.environ.get("MODERATION_ENABLED", "true")
+MODERATION_SKIP_USERS = os.environ.get("MODERATION_SKIP_USERS","").split(",")
+
 ALLOWED_SERVER_IDS: List[int] = []
 server_ids = os.environ["ALLOWED_SERVER_IDS"].split(",")
 for s in server_ids:

@@ -1,4 +1,6 @@
 from src.constants import (
+    MODERATION_ENABLED,
+    MODERATION_SKIP_USERS,
     SERVER_TO_MODERATION_CHANNEL,
     MODERATION_VALUES_FOR_BLOCKED,
     MODERATION_VALUES_FOR_FLAGGED,
@@ -12,6 +14,17 @@ from src.utils import logger
 def moderate_message(
     message: str, user: str
 ) -> Tuple[str, str]:  # [flagged_str, blocked_str]
+
+    # If moderation is disabled, return empty strings
+    if MODERATION_ENABLED != "true":
+        logger.info(f"WARNING: Moderation is disabled.")
+        return ("", "")
+
+    # moderation is enabled, but this user is allowed to bypass it
+    if str(user) in MODERATION_SKIP_USERS:
+        logger.info(f"User {user} allowed to bypass moderation")
+        return ("", "")
+
     moderation_response = openai.Moderation.create(
         input=message, model="text-moderation-latest"
     )
